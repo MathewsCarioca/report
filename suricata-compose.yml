@@ -1,0 +1,16 @@
+services:
+  suricata:
+    image: jasonish/suricata:latest
+    container_name: suricata
+    volumes:
+      - ./suricata-config:/etc/suricata       # Pasta para arquivos de configuração do Suricata
+      - ./logs:/var/log/suricata              # Pasta para logs do Suricata
+      - ./rules:/var/lib/suricata/rules       # Pasta para as regras personalizadas
+    network_mode: host                        # Permite captura de tráfego diretamente na interface
+    cap_add:
+      - NET_ADMIN                            # Permite manipulação de configurações de rede
+      - SYS_NICE                             # Permite ajuste de prioridades do sistema
+    restart: unless-stopped
+    environment:
+      - SURICATA_LOG_LEVEL=info              # Nível de log (opcional)
+

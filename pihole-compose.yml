@@ -1,0 +1,20 @@
+services:
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    environment:
+      TZ: "America/Sao_Paulo"                # Ajuste para o seu fuso horário
+      WEBPASSWORD: "sua_senha_aqui"         # Senha para acessar o painel do Pi-hole
+    volumes:
+      - ./pihole-config:/etc/pihole          # Pasta compartilhada para os arquivos de configuração
+      - ./dnsmasq-config:/etc/dnsmasq.d      # Configurações do Dnsmasq
+    ports:
+      - "53:53/tcp"                          # Porta DNS TCP
+      - "53:53/udp"                          # Porta DNS UDP
+      - "80:80/tcp"                          # Interface web
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN                            # Permite manipulação de configurações de rede
+    dns:
+      - 127.0.0.1                            # Configuração de DNS do container
+      - 1.1.1.1                              # DNS externo como fallback
